@@ -1,0 +1,11 @@
+# 11 resource changes, 10 findings
+critical	TF001	aws_db_instance.orders	aws_db_instance will be replaced (destroyed and recreated): data in it is lost unless it is restored from a backup
+critical	TF001	aws_s3_bucket.logs	aws_s3_bucket will be destroyed: data in it is lost unless it is restored from a backup
+high	TF003	aws_iam_policy.admin	policy allows every action on every resource
+high	TF004	aws_s3_bucket_acl.site	bucket ACL is public-read
+high	TF004	aws_s3_bucket_public_access_block.site	public access block disabled: block_public_acls
+high	TF002	aws_security_group.web	ingress open to the internet on all ports
+high	TF002	aws_security_group_rule.ssh	ingress open to the internet on SSH (22)
+medium	TF005	aws_db_instance.orders	database storage is not encrypted
+medium	TF006	aws_db_instance.orders	database is publicly accessible
+medium	TF005	aws_ebs_volume.data	volume is not encrypted
