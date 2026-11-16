@@ -2,6 +2,8 @@
 
 tfplan-guard reads the JSON form of a Terraform plan and reports the changes a reviewer should stop on: databases, buckets and keys that will be destroyed or replaced, security groups opened to the internet on admin and database ports, IAM policies that allow everything, public buckets, unencrypted storage, and unusually large deletions. It reads the plan, never touches state or the cloud.
 
+![Terminal demo of tfplan-guard on its sample data](docs/demo.svg)
+
 **Live demo:** https://jvch0512.github.io/tfplan-guard/ (A synthetic plan with a mix of risky and safe changes.)
 
 Go 1.22+, standard library only. The demo page is rendered from the tool's `--tsv` output by `scripts/site.py` (Python 3, only needed to regenerate the page).
@@ -48,3 +50,13 @@ make test    # 16 Go tests (go vet + go test)
 ```
 
 MIT.
+
+## Code scanning (SARIF)
+
+`scripts/tsv2sarif.py` converts the `--tsv` output into SARIF 2.1.0, so findings show up in GitHub code scanning:
+
+```sh
+./tfplan-guard examples/plan.json --tsv | python3 scripts/tsv2sarif.py --tool tfplan-guard --prefix examples > results.sarif
+```
+
+Upload `results.sarif` with `github/codeql-action/upload-sarif`. Severities map to SARIF levels (critical and high to error, medium to warning, low and info to note) and to a `security-severity` score.
